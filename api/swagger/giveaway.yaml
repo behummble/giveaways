@@ -1,0 +1,252 @@
+openapi: 3.0.3
+info:
+  title: Swagger Lottery - OpenAPI 3.0
+  description: |-
+    Description for lottery service
+  termsOfService: http://swagger.io/terms/
+servers:
+  - url: https://localhost/api/
+tags:
+  - name: giveaways
+    description: Info about your giveaway
+paths:
+  /giveaways:
+    post:
+      tags:
+        - giveaways
+      summary: Add a new giveaway
+      description: Add a new giveaway
+      operationId: addGiveaway
+      parametrs:
+        - name: api_key
+            in: header
+            description: ''
+            required: true
+            schema:
+              type: string
+      requestBody:
+        description: Create a new giveaway
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Giveaway'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Giveaway'          
+        '400':
+          description: Invalid input
+        '401':
+          description: Key not valid
+        '422':
+          description: Validation exception
+      security:
+            - api_key: []
+  /giveaways/{id}:
+    get:
+      tags:
+        - giveaways
+      summary: Return info about giveaway
+      description: Return info about giveaway by id
+      operationId: getGiveaway
+      parameters:
+        - name: id
+          in: path 
+          required: true
+          schema:
+            type: string
+        - name: api_key
+          in: header
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Giveaway'        
+        '400':
+          description: Invalid input
+        '401':
+          description: Key not valid
+        '422':
+          description: Validation exception
+      security:
+            - api_key: []
+    put:
+      tags:
+        - giveaways
+      summary: Update an existing giveaway
+      description: Update an existing giveaway by Id
+      operationId: updateGiveaway
+      parameters:
+        - name: id
+          in: path 
+          required: true
+          schema:
+            type: string
+        - name: api_key
+          in: header
+          description: ''
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update an existent giveaway
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Giveaway'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Giveaway'          
+        '400':
+          description: Invalid ID supplied
+        '401':
+          description: Key not found
+        '404':
+          description: Giveaway not found
+        '422':
+          description: Validation exception
+      security:
+            - api_key: []
+    delete:
+      tags:
+        - giveaways
+      summary: Delete an existing giveaway
+      description: Delete an existing giveaway by Id
+      operationId: deleteGiveaway
+      parameters:
+        - name: id
+          in: path 
+          required: true
+          schema:
+            type: string
+        - name: api_key
+          in: header
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation         
+        '400':
+          description: Invalid ID supplied
+        '401':
+          description: Key not found
+        '404':
+          description: Giveaway not found
+        '422':
+          description: Validation exception
+      security:
+            - api_key: []
+  /giveaways/{id}/winners:
+    get:
+      tags:
+        - giveaways
+      summary: Return info about winners of giveaway
+      description: Return info about winners of giveaway by id
+      operationId: getGiveawayWinners
+      parameters:
+        - name: id
+          in: path 
+          required: true
+          schema:
+            type: string
+        - name: api_key
+          in: header
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Winners'        
+        '400':
+          description: Invalid input
+        '401':
+          description: Key not valid
+        '422':
+          description: Validation exception
+      security:
+            - api_key: []
+  
+components:
+  schemas:
+    Giveaway:
+      required:
+        - description
+        - giveawayDate
+        - participantsNumber
+        - winnersNumber
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        description:
+          type: string
+          example: "Рогызгрыш Xiaomi mi band"
+
+        winnersNumber:
+          type: integer
+          format: int64
+          example: 10
+
+        participantsNumber:
+          type: integer
+          format: int64
+          example: 10
+
+        giveawayDate:
+          type: string
+          format: date-time
+          example: "2024-09-01 15:00:00"
+    Winners:
+      type: object
+      properties:
+        winners:
+          type: array
+          items:
+            $ref: '#/components/schemas/Winner'
+    Winner:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        username:
+          type: string
+          example: "@test123"
+
+  requestBodies:
+    Giveaway:
+      description: Giveaway object that needs to be created or changed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Giveaway'
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
