@@ -14,18 +14,18 @@ type Postgres struct {
 	conn *gorm.DB
 }
 
-func New(log *slog.Logger, dbName, host, username, password string, port int) Postgres {
+func New(log *slog.Logger, username, password, dbName, host string, port int) (Postgres, error) {
 	config := dbConfig(dbName, host, username, password, port)
 
 	db, err := gorm.Open(postgres.New(config))
 	if err != nil {
-		panic(err)
+		return Postgres{}, err
 	}
 
 	return Postgres{
 		log: log,
 		conn: db,
-	}
+	}, nil
 }
 
 func(client Postgres) AddGiveaway(data entity.Giveaway) (int, error) {
@@ -71,7 +71,7 @@ func(client Postgres) Client(key string) (entity.Client, error) {
 	return customer, res.Error
 }
 
-func dbConfig(dbName, host, username, password string, port int) postgres.Config {
+func dbConfig(host, username, password, dbName string, port int) postgres.Config {
 	return postgres.Config{
 		DSN: fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=enable TimeZone=Europe/Moscow",
 						host, username, password, dbName, port),

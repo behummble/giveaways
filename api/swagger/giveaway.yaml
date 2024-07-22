@@ -4,6 +4,7 @@ info:
   description: |-
     Description for lottery service
   termsOfService: http://swagger.io/terms/
+  version: 1.0.11
 servers:
   - url: https://localhost/api/
 tags:
@@ -17,13 +18,13 @@ paths:
       summary: Add a new giveaway
       description: Add a new giveaway
       operationId: addGiveaway
-      parametrs:
+      parameters:
         - name: api_key
-            in: header
-            description: ''
-            required: true
-            schema:
-              type: string
+          in: header
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         description: Create a new giveaway
         content:

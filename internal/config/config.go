@@ -8,21 +8,22 @@ import (
 )
 
 type Config struct {
-	Redis RedisConfig `yaml:"redis"`
+	DB DBConfig `yaml:"redis"`
 	Bot BotConfig `yaml:"bot"`
 	Server ServerConfig `yaml:"server"`
 }
 
-type RedisConfig struct {
+type DBConfig struct {
 	Host string `yaml:"host" env:"DB_HOST" env-default:"127.0.0.1"`
-	Port string `yaml:"port" env:"DB_PORT" env-default:"5432"`
-	Password string `yaml:"password" env:"REDIS_PASSWORD"`
+	Port int `yaml:"port" env:"DB_PORT" env-default:"5432"`
+	Username string `yaml:"username" env:"DB_USERNAME" env-default:"postgres"`
+	Password string `yaml:"password" env:"DB_PASSWORD"`
+	DBName string `yaml:"dbname" env:"DB_NAME"`
 }
 
 type BotConfig struct {
 	Token string `yaml:"token" env:"BOT_TOKEN"`
 	UpdateTimeout int `yaml:"timeout" env-default:"10"`
-	ChatID int64 `yaml:"chatID" env:"CHAT_ID"`
 }
 
 type ServerConfig struct {

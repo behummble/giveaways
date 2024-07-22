@@ -2,7 +2,6 @@ package bot
 
 import (
 	"log/slog"
-	"time"
 	"gopkg.in/telebot.v3"
 )
 
@@ -16,33 +15,17 @@ type Bot struct {
 	botService BotService
 }
 
-func New(log *slog.Logger, botServie BotService, token string, timeout int) (*Bot, error) {
-	tgBot, err := initialize(token, timeout)
-	if err != nil {
-		return nil, err
-	}
-
+func New(log *slog.Logger, botServie BotService, tgbot *telebot.Bot) (*Bot, error) {
 	bot := &Bot{
 		log: log,
-		tgbot: tgBot,
+		tgbot: tgbot,
 		botService: botServie,
 	}
-
-	bot.register()
 
 	return bot, nil
 }
 
-func initialize(token string, timeout int) (*telebot.Bot, error) {
-	return telebot.NewBot(
-		telebot.Settings{
-			Token: token,
-			Poller: &telebot.LongPoller{Timeout: time.Second * time.Duration(timeout)},
-		},
-	)
-}
-
-func(bot *Bot) register() {
+func(bot *Bot) Register() {
 	bot.tgbot.Handle("/list", bot.giveaways)
 }
 
