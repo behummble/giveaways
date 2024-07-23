@@ -23,6 +23,7 @@ type DB interface {
 
 type Bot interface {
 	NotifyWinner(ctx context.Context, id int64) error
+	SchedulePublication(ctx context.Context, giveawayID int) error
 	PublishResults(ctx context.Context, messageID int64, winners []int64) error
 	CancelGiveaway(ctx context.Context, messageID int64) error
 }
@@ -47,38 +48,38 @@ func(giveaway *Giveaway) ClientExist(key string) bool {
 	return err == nil
 }
 
-func(giveaway *Giveaway) AddGiveaway() (int, error) {
+func(giveaway *Giveaway) AddGiveaway(body []byte) (int, error) {
 
 }
 
-func(giveaway *Giveaway) Giveaway() (entity.Giveaway, error) {
+func(giveaway *Giveaway) Giveaway(giveawayID int) (entity.Giveaway, error) {
 	
 }
 
-func(giveaway *Giveaway) UpdateGiveaway() (entity.Giveaway, error) {
+func(giveaway *Giveaway) UpdateGiveaway(giveawayID int, body []byte) (entity.Giveaway, error) {
 	
 }
 
-func(giveaway *Giveaway) DeleteGiveaway() error {
+func(giveaway *Giveaway) DeleteGiveaway(giveawayID int) error {
 	
 }
 
-func(giveaway *Giveaway) AddParticipant() (int, error) {
+func(giveaway *Giveaway) AddParticipant(body []byte) (int, error) {
 	
 }
 
-func(giveaway *Giveaway) Participant() (entity.Participant, error) {
+func(giveaway *Giveaway) Participant(participantID int) (entity.Participant, error) {
 	
 }
 
-func(giveaway *Giveaway) Winners() ([]entity.Winner, error) {
+func(giveaway *Giveaway) Winners(giveawayID int) ([]entity.Winner, error) {
 	
 }
 
-func(giveaway *Giveaway) Client() (entity.Client, error) {
+func(giveaway *Giveaway) Client(clientID int) (entity.Client, error) {
 	
 }
 
-func(giveaway *Giveaway) AddClient() (int, error) {
+func(giveaway *Giveaway) AddClient(body []byte) (int, error) {
 	
 }
