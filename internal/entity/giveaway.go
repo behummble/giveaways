@@ -9,6 +9,7 @@ type Client struct {
 	CreatedAt time.Time
 	Name string
 	ApiKey string
+	IsAdmin bool
 }
 
 type Giveaway struct {
@@ -22,6 +23,9 @@ type Giveaway struct {
 	Terms []string
 	ClientID int
 	Client Client
+	MessageID int64
+	SchedulerPublishID int
+	SchedulerGiveawayID int
 }
 
 type Participant struct {

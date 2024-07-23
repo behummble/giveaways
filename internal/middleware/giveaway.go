@@ -9,7 +9,7 @@ import (
 )
 
 type GiveawayService interface {
-	ClientExist(key string)
+	ClientExist(key string) bool
 }
 
 func ApiKeyIsValid(c *gin.Context, giveaway *giveawayservice.Giveaway) (bool, int) {

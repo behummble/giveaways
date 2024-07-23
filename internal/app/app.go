@@ -43,7 +43,7 @@ func New(log *slog.Logger, config *config.Config) *App {
 
 	botService := botservice.New(log, db, tgBot, cron)
 
-	botApp, err := botapp.New(log, db, tgBot)
+	botApp, err := botapp.New(log, botService, tgBot)
 	if err != nil {
 		panic("Can`t init bot" + err.Error())
 	}

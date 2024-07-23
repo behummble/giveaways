@@ -8,10 +8,6 @@ import (
 	"gopkg.in/telebot.v3"
 )
 
-type BotRouter interface {
-
-}
-
 type Bot struct {
 	log *slog.Logger
 	tgbot *telebot.Bot
