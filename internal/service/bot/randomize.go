@@ -38,14 +38,20 @@ func New(log *slog.Logger, db DB, tgbot *telebot.Bot, cron *cron.Cron) *Bot {
 	}
 }
 
-func(bot *Bot) NotifyWinner(ctx context.Context, id int64) error {
+func (bot Bot) NotifyWinner(ctx context.Context, id int64) error {
 
 }
 
-func(bot *Bot) PublishResults(ctx context.Context, messageID int64, winners []int64) error {
+func (bot Bot) PublishResults(ctx context.Context, messageID int64, winners []int64) error {
 	
 }
 
-func(bot *Bot) CancelGiveaway(ctx context.Context, messageID int64) error {
+func (bot Bot) CancelGiveaway(ctx context.Context, messageID int64) error {
 	
 }
+
+func (bot Bot) SchedulePublication(ctx context.Context, giveawayID int) error {
+
+}
+
+func (bot Bot) ParticipantMetTerms(ctx context.Context, terms []string, userID int64) (bool, error)

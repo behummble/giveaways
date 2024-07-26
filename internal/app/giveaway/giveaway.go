@@ -15,7 +15,7 @@ type Giveaway struct {
 }
 
 func New(log *slog.Logger, db giveawayservice.DB, bot giveawayservice.Bot, cron *cron.Cron) (*Giveaway, error) {
-	giveawayService := giveawayservice.New(log, db, bot)
+	giveawayService := giveawayservice.New(log, db, bot, cron)
 	
 	router := router.New(log, giveawayService)
 	return &Giveaway{

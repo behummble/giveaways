@@ -29,7 +29,7 @@ func New(log *slog.Logger, username, password, dbName, host string, port int) (P
 	}, nil
 }
 
-func(client Postgres) AddGiveaway(ctx context.Context, data entity.Giveaway) (int, error) {
+func( client Postgres) AddGiveaway(ctx context.Context, data entity.Giveaway) (int, error) {
 	res := client.conn.WithContext(ctx).Create(&data)
 	if res.Error != nil {
 		return -1, res.Error
@@ -38,14 +38,14 @@ func(client Postgres) AddGiveaway(ctx context.Context, data entity.Giveaway) (in
 	return data.ID, res.Error
 }
 
-func(client Postgres) Giveaway(ctx context.Context, id int) (entity.Giveaway, error) {
+func (client Postgres) Giveaway(ctx context.Context, id int) (entity.Giveaway, error) {
 	var giveaway entity.Giveaway
 	res := client.conn.WithContext(ctx).First(&giveaway, id)
 
 	return giveaway, res.Error
 }
 
-func(client Postgres) UpdateGiveaway(ctx context.Context, updGiveaway entity.Giveaway) (entity.Giveaway, error) {
+func (client Postgres) UpdateGiveaway(ctx context.Context, updGiveaway entity.Giveaway) (entity.Giveaway, error) {
 	giveaway, err := client.Giveaway(ctx, updGiveaway.ID)
 	if err != nil {
 		return giveaway, err
@@ -55,11 +55,11 @@ func(client Postgres) UpdateGiveaway(ctx context.Context, updGiveaway entity.Giv
 	return updGiveaway, res.Error
 }
 
-func(client Postgres) DeleteGiveaway(ctx context.Context, id int) error {
+func (client Postgres) DeleteGiveaway(ctx context.Context, id int) error {
 	return client.conn.WithContext(ctx).Delete(&entity.Giveaway{}, id).Error
 }
 
-func(client Postgres) AddParticipant(ctx context.Context, data entity.Participant) (int, error) {
+func (client Postgres) AddParticipant(ctx context.Context, data entity.Participant) (int, error) {
 	res := client.conn.WithContext(ctx).Create(&data)
 	if res.Error != nil {
 		return -1, res.Error
@@ -68,28 +68,39 @@ func(client Postgres) AddParticipant(ctx context.Context, data entity.Participan
 	return data.ID, res.Error
 }
 
-func(client Postgres) Participant(ctx context.Context, id int) (entity.Participant, error) {
-	var giveaway entity.Participant
-	res := client.conn.WithContext(ctx).First(&giveaway, id)
+func (client Postgres) Participant(ctx context.Context, id int) (entity.Participant, error) {
+	var participant entity.Participant
+	res := client.conn.WithContext(ctx).First(&participant, id)
 
-	return giveaway, res.Error
+	return participant, res.Error
 }
 
-func(client Postgres) Winners(ctx context.Context, id int) ([]entity.Winner, error) {
+func (client Postgres) AllParticipants(ctx context.Context, giveawayID int) ([]entity.Participant, error) {
+	var participants []entity.Participant
+	res := client.conn.WithContext(ctx).Where("giveaway_id = ?", giveawayID).Find(&participants)
+
+	return participants, res.Error
+}
+
+func (client Postgres) AddWinners(ctx context.Context, winners []entity.Winner) error {
+	return client.conn.WithContext(ctx).Create(&winners).Error
+}
+
+func (client Postgres) Winners(ctx context.Context, giveawayID int) ([]entity.Winner, error) {
 	var winners []entity.Winner
-	res := client.conn.WithContext(ctx).Where("giveaway_id = ?", id).Find(&winners)
+	res := client.conn.WithContext(ctx).Where("giveaway_id = ?", giveawayID).Find(&winners)
 	
 	return winners, res.Error
 }
 
-func(client Postgres) Client(ctx context.Context, key string) (entity.Client, error) {
+func (client Postgres) Client(ctx context.Context, key string) (entity.Client, error) {
 	var customer entity.Client
 	res := client.conn.WithContext(ctx).Where("api_key = ?", key).First(&customer)
 	
 	return customer, res.Error
 }
 
-func(client Postgres) AddClient(ctx context.Context, data entity.Client) (int, error) {
+func (client Postgres) AddClient(ctx context.Context, data entity.Client) (int, error) {
 	res := client.conn.WithContext(ctx).Create(&data)
 	if res.Error != nil {
 		return -1, res.Error
@@ -98,7 +109,7 @@ func(client Postgres) AddClient(ctx context.Context, data entity.Client) (int, e
 	return data.ID, res.Error
 }
 
-func(client Postgres) DeleteClient(ctx context.Context, id int) error {
+func (client Postgres) DeleteClient(ctx context.Context, id int) error {
 	return client.conn.WithContext(ctx).Delete(&entity.Participant{}, id).Error
 }
 
