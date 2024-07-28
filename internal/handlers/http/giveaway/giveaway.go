@@ -86,13 +86,25 @@ func (r *Router) newGiveaway(context *gin.Context) {
 		return
 	}
 
-	r.giveaway.AddGiveaway(body)
+	resp, err := r.giveaway.AddGiveaway(body)
+
+	if err != nil {
+		context.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error":err})
+	} else {
+		context.String(http.StatusCreated, string(resp))
+	}
+
 }
 
 func (r *Router) giveawayInfo(context *gin.Context) {
 	idStr, _ := context.Params.Get("id")
 	id, _ := strconv.Atoi(idStr)
-	res, err := r.giveaway.Giveaway(id)
+	resp, err := r.giveaway.Giveaway(id)
+	if err != nil {
+		context.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error":err})
+	} else {
+		context.String(http.StatusOK, string(resp))
+	}
 }
 
 func (r *Router) updateGiveaway(context *gin.Context) {
@@ -105,17 +117,33 @@ func (r *Router) updateGiveaway(context *gin.Context) {
 	idStr, _ := context.Params.Get("id")
 	id, _ := strconv.Atoi(idStr)
 
-	res, err := r.giveaway.UpdateGiveaway(id, body)
+	resp, err := r.giveaway.UpdateGiveaway(id, body)
+	if err != nil {
+		context.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error":err})
+	} else {
+		context.String(http.StatusOK, string(resp))
+	}
 }
 
 func (r *Router) deleteGiveaway(context *gin.Context) {
 	idStr, _ := context.Params.Get("id")
 	id, _ := strconv.Atoi(idStr)
 	err := r.giveaway.DeleteGiveaway(id)
+	if err != nil {
+		context.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error":err})
+	} else {
+		context.Status(http.StatusOK)
+	}
 }
 
 func (r *Router) winnersInfo(context *gin.Context) {
 	idStr, _ := context.Params.Get("id")
 	id, _ := strconv.Atoi(idStr)
-	res, err := r.giveaway.Giveaway(id)
+	
+	resp, err := r.giveaway.Winners(id)
+	if err != nil {
+		context.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error":err})
+	} else {
+		context.String(http.StatusOK, string(resp))
+	}
 }

@@ -23,7 +23,8 @@ type Giveaway struct {
 	Terms []string
 	ClientID int
 	Client Client
-	MessageID int64
+	MessageID int
+	GiveawayChatID int64
 	SchedulerPublishID int
 	SchedulerGiveawayID int
 }
