@@ -18,6 +18,13 @@ const (
 	cancelGiveaway = "К сожалению, розыгрыш был отменен."
 )
 
+var (
+	inlineParticipate = telebot.InlineButton {
+		Text: "Участвовать",
+		InlineQuery: "/add_participate",
+	}
+)
+
 type DB interface {
 	Participant(ctx context.Context, id int) (entity.Participant, error)
 	Giveaway(ctx context.Context, id int) (entity.Giveaway, error)
@@ -147,8 +154,18 @@ func schedulePublicationFunc(bot Bot, giveawayID int, chatID int64) func() {
 			bot.log.Error(fmt.Sprintf("Can`t initialize giveaway tg_chat %d", chatID), "Error", err)
 			return
 		}
+		keyboard := make([][]telebot.InlineButton, 1)
+		keyboard[0] = append(keyboard[0], inlineParticipate)
+		markup := &telebot.ReplyMarkup{
+			InlineKeyboard: keyboard,
+		}
 
-		tgMessage, err := bot.tgbot.Send(chat, giveaway.Description)
+		msg := &telebot.Message{
+			Text: giveaway.Description,
+			ReplyMarkup: markup,
+		}
+
+		tgMessage, err := bot.tgbot.Send(chat, msg)
 		if err != nil {
 			bot.log.Error(fmt.Sprintf("Can`t publish giveaway message in giveaway tg_chat %d", chatID), "Error", err)
 			return

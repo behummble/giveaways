@@ -4,6 +4,7 @@ import (
 	"log/slog"
 
 	router "github.com/behummble/giveaway/internal/handlers/http/bot"
+	"github.com/behummble/giveaway/internal/service/giveaway"
 	"github.com/behummble/giveaway/internal/service/bot"
 	"gopkg.in/telebot.v3"
 )
@@ -11,7 +12,7 @@ import (
 type Bot struct {
 	log *slog.Logger
 	tgbot *telebot.Bot
-	botService *botservice.Bot
+	giveawayService *giveawayservice.Giveaway
 	router *router.Bot
 }
 

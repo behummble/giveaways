@@ -2,14 +2,17 @@ package entity
 
 import (
 	"time"
+
 )
 
 type Client struct {
 	ID int
 	CreatedAt time.Time
+	UpdatetAt time.Time
 	Name string
-	ApiKey string
-	IsAdmin bool
+	UserID int
+	AccessToken string
+	RefreshToken string
 }
 
 type Giveaway struct {
